@@ -34,6 +34,14 @@ const RegistrarAnime = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+      // Expresión regular para validar el enlace del tráiler de YouTube
+    const youtubeLinkRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=.{11})$/;
+
+    if (!youtubeLinkRegex.test(mangaData.trailerLink)) {
+      alert('El enlace del tráiler no cumple con el formato de YouTube válido.');
+      return;
+    }
     console.log('Datos de la película:', mangaData);
 
   };

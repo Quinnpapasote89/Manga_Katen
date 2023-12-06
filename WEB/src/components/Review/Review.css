@@ -1,5 +1,5 @@
 .img-poster{
-    width: 35rem;
+    width: 24rem;
 }
 
 .edit-button {
@@ -12,5 +12,15 @@
     color: red;
     background-color: transparent;
     border: none;
+  }
+
+  @media only screen and (max-width: 796px){
+    .img-poster{
+       width: 15rem;
+    }
+    .show-review{
+      display: flex;
+      flex-direction: column;
+    }
   }
   

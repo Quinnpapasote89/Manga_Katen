@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-solid-svg-icons';
@@ -8,11 +8,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import api from '../../api/axiosConfig';
 
-const MangaCard = ({ manga }) => {
+const MangaCard = ({manga}) => {
   const navigate = useNavigate();
 
-  function review(mangaId){
+  function review(mangaId) {
     navigate(`/Review/${mangaId}`);
   }
 
@@ -29,7 +30,7 @@ const MangaCard = ({ manga }) => {
               </div>
             </Link>
             <div className="manga-review-button-container">
-                <Button variant="info" onClick={() => review(manga.imdbId)}>Reviews</Button>
+              <Button variant="info" onClick={() => review(manga.imdbId)}>Reviews</Button>
             </div>
           </div>
         </Card.Body>
@@ -38,13 +39,44 @@ const MangaCard = ({ manga }) => {
   );
 };
 
-const MangaList = ({ mangas }) => {
+const MangaList = () => {
+  const [mangas, setMangas] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const navigate = useNavigate();
+
+  const getMangas = async () => {
+    try {
+      const response = await api.get("/api/v1/mangas");
+      setMangas(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getMangas();
+  }, []);
+
+  const filteredMangas = mangas.filter(manga =>
+    manga.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <Row xs={1} md={2} lg={3} className="g-3">
-      {mangas.map((manga, index) => (
-        <MangaCard key={index} manga={manga} />
-      ))}
-    </Row>
+    <div>
+      <input
+        type="text"
+        placeholder="Buscar por título"
+        value={searchTerm}
+        className='search-input'
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <Row xs={1} md={2} lg={3} className="g-3">
+        {filteredMangas.map((manga, index) => (
+          <MangaCard key={index} manga={manga} />
+        ))}
+      </Row>
+    </div>
   );
 };
 

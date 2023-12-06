@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import './Login.css'; // Asegúrate de tener los estilos CSS adecuados
+import { toast } from 'react-toastify';
+import api from '../../api/axiosConfig';
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -18,23 +20,31 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simulación de autenticación (aquí deberías verificar con tu backend)
-    const validUsername = 'usuario'; // Nombre de usuario válido
-    const validPassword = 'contraseña'; // Contraseña válida
-
-    if (userData.username === validUsername && userData.password === validPassword) {
-      // Aquí puedes realizar acciones de autenticación exitosa (por ejemplo, redireccionar a otra página)
-      console.log('Inicio de sesión exitoso');
-      setLoginError(false);
-      setUserData({ username: '', password: '' }); // Limpiar los campos
-    } else {
-      // Si el inicio de sesión falla, muestra un mensaje de error
-      setLoginError(true);
-    }
+    // Enviamos los datos del usuario al servidor
+    api.post('api/v1/usuarios/login', {
+        username: userData.username,
+        password: userData.password,
+    })
+    .then((response) => {
+        console.log('Inicio de sesión exitoso:', response.data);
+        // Guardamos el nombre de usuario en el localStorage
+        localStorage.setItem('username', userData.username);
+        // Limpiar los campos después de enviar los datos
+        setUserData({ username: '', password: '' });
+        setLoginError(false);
+        // Mostrar una alerta de éxito
+        toast.success('Inicio de sesión exitoso!');
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        // Mostrar una alerta de error
+        toast.error('Ocurrió un error al iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo.');
+    });
   };
 
   return (
-    <Form onSubmit={handleSubmit} className='formulario-login-container'>
+    <Form onSubmit={handleSubmit} className='formulario-login-container' style={{marginTop: '5em'}}>
       <Form.Group controlId="formUsername">
         <Form.Label className='labels'>Usuario</Form.Label>
         <Form.Control
@@ -58,7 +68,7 @@ const Login = () => {
         {loginError && <Form.Text className="text-danger">Credenciales inválidas.</Form.Text>}
       </Form.Group>
 
-      <Button variant="danger" type="submit">
+      <Button variant="danger" type="submit" style={{marginTop:'1em'}}>
         Iniciar Sesión
       </Button>
     </Form>

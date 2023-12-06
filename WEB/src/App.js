@@ -11,6 +11,7 @@ import Review from './components/Review/Review';
 import Registro from './components/Registro/Registro';
 import RegistrarAnime from './components/RegistroAnime/RegistroAnime';
 import Login from './components/Login/Login';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
           <Route path="/ingresar" element={<Login/>}></Route>
         </Route>
       </Routes>
-
+      <ToastContainer />
     </div>
   );
 }

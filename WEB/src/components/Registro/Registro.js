@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import api from '../../api/axiosConfig';
 import './Registro.css';
+import { toast } from 'react-toastify';
 
 const Registro = () => {
   const [userData, setUserData] = useState({
@@ -21,16 +23,32 @@ const Registro = () => {
 
     // Verificar si las contraseñas coinciden
     if (userData.password === userData.confirmPassword) {
-      // Aquí puedes enviar los datos a tu backend o realizar alguna acción con los datos del usuario
-      console.log('Datos del usuario:', userData);
-      // Limpiar los campos después de enviar los datos
-      setUserData({ username: '', password: '', confirmPassword: '' });
-      setPasswordMatch(true);
+      // Enviamos los datos del usuario al servidor
+      api.post('api/v1/usuarios', {
+        username: userData.username,
+        password: userData.password,
+      })
+      .then((response) => {
+        console.log('Usuario creado:', response.data);
+        // Limpiar los campos después de enviar los datos
+        setUserData({ username: '', password: '', confirmPassword: '' });
+        setPasswordMatch(true);
+        // Mostrar una alerta de éxito
+        toast.success('Usuario creado con éxito!');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Mostrar una alerta de error
+        toast.error('Ocurrió un error al crear el usuario. Por favor, inténtalo de nuevo.');
+      });
     } else {
       // Si las contraseñas no coinciden, mostrar un mensaje de error
       setPasswordMatch(false);
+      // Mostrar una alerta de error
+      toast.error('Las contraseñas no coinciden.');
     }
   };
+
 
   return (
     <Form onSubmit={handleSubmit} className='formulario-registro-container' style={{marginTop:'5em'}}>
@@ -68,7 +86,7 @@ const Registro = () => {
         {!passwordMatch && <Form.Text className="text-danger">Las contraseñas no coinciden.</Form.Text>}
       </Form.Group>
 
-      <Button variant="danger" type="submit" style={{marginTop:'2em'}}>
+      <Button variant="danger" type="submit" style={{marginTop:'1em'}}>
         Registrarse
       </Button>
     </Form>
