@@ -11,6 +11,8 @@ import Review from './components/Review/Review';
 import Registro from './components/Registro/Registro';
 import RegistrarAnime from './components/RegistroAnime/RegistroAnime';
 import Login from './components/Login/Login';
+import ModificarAnime from './components/ModificarAnime/ModificarAnime';
+import EditManga from './components/EditManga/EditManga';
 import { ToastContainer } from 'react-toastify';
 
 
@@ -62,6 +64,8 @@ function App() {
           <Route path="/mangaList" element={<MangaList mangas={mangas} />}></Route>
           <Route path="/registrar" element={<Registro/>}></Route>
           <Route path="/registrar-anime" element={<RegistrarAnime />}></Route>
+          <Route path='/modificar-anime' element={<ModificarAnime />}></Route>
+          <Route path='/editar-anime/:imdbId' element={<EditManga/>}></Route>
           <Route path="/ingresar" element={<Login/>}></Route>
         </Route>
       </Routes>

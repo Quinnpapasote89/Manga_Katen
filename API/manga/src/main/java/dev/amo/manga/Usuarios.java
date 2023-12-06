@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
+import java.util.UUID;
 
 @Document(collection = "usuarios")
 @Data
@@ -17,8 +18,13 @@ import java.util.List;
 @NoArgsConstructor
 public class Usuarios {
     @Id
-    private ObjectId id;
-    private String usuario;
-    private String  contrasena;
+    private String id;
+    private String username;
+    private String password;
+
+    public Usuarios(String username, String password){
+        this.username=username;
+        this.password=password;
+    }
 
 }

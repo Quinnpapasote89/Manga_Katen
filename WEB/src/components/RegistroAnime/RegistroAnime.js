@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import { Form, Button,Col } from 'react-bootstrap';
+import api from '../../api/axiosConfig';
 import './RegistroAnime.css';
+import { toast } from 'react-toastify';
 
 
 const RegistrarAnime = () => {
@@ -9,6 +11,7 @@ const RegistrarAnime = () => {
     title: '',
     releaseDate: '',
     trailerLink: '',
+    sinopsis:'',
     genres: [],
     poster: '',
     backdrops: [],
@@ -17,10 +20,12 @@ const RegistrarAnime = () => {
 
   const [newGenre, setNewGenre] = useState('');
   const [newBackdrop, setNewBackdrop] = useState('');
+  const [username, setUsername] = useState(localStorage.getItem("username"));
+  const isRoot = username === "Root";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setMangaData({ ...mangaData, [name]: value }); // Aquí
+    setMangaData({ ...mangaData, [name]: value }); 
   };
   
   const handleAddGenre = () => {
@@ -32,7 +37,7 @@ const RegistrarAnime = () => {
   };
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
       // Expresión regular para validar el enlace del tráiler de YouTube
@@ -44,7 +49,23 @@ const RegistrarAnime = () => {
     }
     console.log('Datos de la película:', mangaData);
 
+    try {
+      const response = await api.post('api/v1/mangas', mangaData);
+      console.log(response.data);
+      toast.success('Se agrego de forma exitosa el anime!');
+      // Realizar acciones adicionales si es necesario
+    } catch (error) {
+      console.error(error);
+      toast.error('Ocurrio un error para poder ingresar el anime');
+
+    }
+
   };
+
+  if (!isRoot) {
+    toast.error('No tienes autorización para realizar esta acción');
+    return <div>No tienes autorización para ver esta opción</div>;
+  }
 
   return (
     <Form onSubmit={handleSubmit} className="p-4 formulario-container" style={{marginTop:'5em', marginBottom:'5em'}} >
@@ -114,6 +135,20 @@ const RegistrarAnime = () => {
 
       <Form.Group className="mb-3">
         <Col>
+          <Form.Label className='labels'>Sinopsis</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4} // Puedes ajustar el número de filas según sea necesario
+            name="sinopsis"
+            value={mangaData.sinopsis}
+            onChange={handleChange}
+            placeholder="Ingresa la sinopsis del manga"
+          />
+        </Col>
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Col>
           <Form.Label className='labels'>Géneros</Form.Label>
           <Form.Control
             type="text"
@@ -129,6 +164,25 @@ const RegistrarAnime = () => {
 
       {mangaData.genres.map((genre, index) => (
         <div key={index}>{genre}</div>
+      ))}
+
+      <Form.Group className="mb-3">
+        <Col>
+          <Form.Label className='labels'>Backdrops</Form.Label>
+          <Form.Control
+            type="text"
+            value={newBackdrop}
+            onChange={(e) => setNewBackdrop(e.target.value)}
+            placeholder="Ingresa un enlace de backdrop"
+          />
+        </Col>
+        <Col>
+          <Button variant="success" className="mt-2" onClick={handleAddBackdrop} >Agregar Backdrop</Button>
+        </Col>
+      </Form.Group>
+
+      {mangaData.backdrops.map((backdrop, index) => (
+        <div key={index}>{backdrop}</div>
       ))}
 
 

@@ -1,5 +1,6 @@
 package dev.amo.manga;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,4 +24,30 @@ public class ReviewService {
 
         return review;
     }
+    public Review updateReview(String reviewId, String updatedReviewBody) {
+        // Primero, obtenemos la revisión existente
+        Review review = reviewRepo.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found"));
+        // Actualizamos el cuerpo de la revisión
+        review.setBody(updatedReviewBody);
+        // Guardamos la revisión actualizada en la base de datos
+        review = reviewRepo.save(review);
+
+        return review;
+    }
+
+    public void deleteReview(String reviewId) {
+        // Primero, obtenemos la revisión existente
+        Review review = reviewRepo.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found"));
+
+        // Eliminamos la revisión de la base de datos
+        reviewRepo.delete(review);
+
+        // También necesitamos eliminar la referencia de la revisión en la clase Manga
+        mongoTemplate.update(Manga.class)
+                .matching(Criteria.where("reviewIds").is(review))
+                .apply(new Update().pull("reviewIds", review))
+                .first();
+    }
+
+
 }

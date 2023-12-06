@@ -46,9 +46,6 @@ const Header = () => {
         <Navbar.Toggle aria-controls="navbarScroll" onClick={handleCollapse} />
         <Navbar.Collapse id="navbarScroll" className={expanded ? "show" : ""}>
           <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: "100px" }} navbarScroll>
-            <NavLink className="nav-link" to="/">
-              Inicio
-            </NavLink>
             <NavLink className="nav-link" to="/mangaList">
               Lista Animes
             </NavLink>
@@ -61,9 +58,6 @@ const Header = () => {
                     </NavLink>
                     <NavLink className="nav-link" to="/modificar-anime">
                       Modificar Anime
-                    </NavLink>
-                    <NavLink className="nav-link" to="/eliminar-anime">
-                      Eliminar Anime
                     </NavLink>
                   </Nav>
                 </Navbar.Collapse>

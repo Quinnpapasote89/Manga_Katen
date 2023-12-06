@@ -5,7 +5,7 @@ import {Container,Row,Col,Button,Modal} from 'react-bootstrap';
 import ReviewForm from "../ReviewForm/ReviewForm";
 import './Review.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCancel, faEdit, faSave, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 
 import React from 'react'
@@ -156,9 +156,10 @@ const Review = ({getMangaData,manga,reviews,setReviews}) => {
                           onChange={(e) => setEditedReviewText(e.target.value)}
                           rows={4}
                           cols={50}
+                          style={{borderRadius:'5px'}}
                         ></textarea>
-                        <button onClick={() => handleSaveEdit(r.id)}>Guardar</button>
-                        <button onClick={handleCancelEdit}>Cancelar</button>
+                        <button onClick={() => handleSaveEdit(r.id)} className="edit-button"> <FontAwesomeIcon icon={faSave} /> Editar</button>
+                        <button onClick={handleCancelEdit}  className="delete-button"> <FontAwesomeIcon icon={faCancel} />Cancelar</button>
                       </div>
                     ) : (
                       <>

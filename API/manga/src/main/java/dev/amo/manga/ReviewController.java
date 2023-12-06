@@ -19,4 +19,27 @@ public class ReviewController {
         return new ResponseEntity<Review>(reviewService.createReview(payload.get("reviewBody"), payload.get("imdbId"), payload.get("usuario")), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<Review> updateReview(@PathVariable String reviewId, @RequestBody Map<String, String> payload) {
+        Review updatedReview = reviewService.updateReview(reviewId, payload.get("reviewBody"));
+        if (updatedReview != null) {
+            return new ResponseEntity<>(updatedReview, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<Void> deleteReview(@PathVariable String reviewId) {
+        try {
+            // Intentamos eliminar la revisión
+            reviewService.deleteReview(reviewId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RuntimeException e) {
+            // Si la revisión no se encontró, devolvemos un error 404
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

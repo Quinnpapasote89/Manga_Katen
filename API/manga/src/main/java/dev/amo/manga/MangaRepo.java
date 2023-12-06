@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface MangaRepo extends MongoRepository<Manga, ObjectId>{
     Optional<Manga> findMangaByImdbId(String imdbId);
+
+    void deleteByMangaId(Long mangaId);
 }

@@ -28,4 +28,27 @@ public class MangaController {
         return new ResponseEntity<Optional<Manga>>(mangaService.singleManga(imdbId),HttpStatus.OK);
 
     }
+
+    @PostMapping
+    public ResponseEntity<Manga> createManga(@RequestBody Manga manga) {
+        return new ResponseEntity<Manga>(mangaService.saveManga(manga), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{imdbId}")
+    public ResponseEntity<Manga> updateManga(@PathVariable String imdbId, @RequestBody Manga updatedManga) {
+        Manga manga = mangaService.updateManga(imdbId, updatedManga);
+        if (manga != null) {
+            return new ResponseEntity<Manga>(manga, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Manga>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{imdbId}")
+    public ResponseEntity<Void> deleteManga(@PathVariable String imdbId) {
+        mangaService.deleteManga(imdbId);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+
+
 }

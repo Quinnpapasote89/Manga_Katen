@@ -22,6 +22,7 @@ public class Manga {
     private String releaseDate;
     private String trailerLink;
     private String poster;
+    private String sinopsis;
     private List<String> genres;
     private List<String> backdrops;
     @DocumentReference
