@@ -1,0 +1,43 @@
+
+.play-trailer-button{
+    padding:0px;
+    margin:0px;
+    width: 150px;
+}
+
+.play-button{
+    padding: 0px;
+    margin: 0px;
+    color:rgb(0, 0, 0);
+    font-size: 3em;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.play-button:hover{
+    color: rgb(231, 9, 9);
+}
+
+.list-manga-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+}
+
+@media only screen and (max-width: 1360px){
+    .list-manga-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+    }
+    
+    .play-trailer-button{
+        padding:0px;
+        margin:0px;
+        width: auto;
+        margin-bottom: 1em;
+    }
+}

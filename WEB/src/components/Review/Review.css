@@ -1,0 +1,16 @@
+.img-poster{
+    width: 35rem;
+}
+
+.edit-button {
+    color: blue;
+    background-color: transparent;
+    border: none;
+  }
+  
+  .delete-button {
+    color: red;
+    background-color: transparent;
+    border: none;
+  }
+  
