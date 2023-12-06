@@ -9,10 +9,10 @@ const SearchBar = ({ setSearchTerm }) => {
   return (
     <Form>
       <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm="2">
+        <Form.Label column sm="1">
           Buscar:
         </Form.Label>
-        <Col sm="10">
+        <Col sm="10" style={{width:'30%'}}>
           <Form.Control type="text" placeholder="Ingrese el título del manga" onChange={handleChange} />
         </Col>
       </Form.Group>

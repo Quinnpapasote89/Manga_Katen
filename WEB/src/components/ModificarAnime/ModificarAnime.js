@@ -3,6 +3,7 @@ import api from '../../api/axiosConfig';
 import { toast } from 'react-toastify';
 import { Button, Modal,Row,Col,Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import SearchBar from '../Search/SearchBar';
 import './ModificarAnime.css';
 
 const ModificarAnime = () => {
@@ -10,6 +11,7 @@ const ModificarAnime = () => {
     const [modalShow, setModalShow] = useState(false);
     const [selectedManga, setSelectedManga] = useState(null);
     const [username, setUsername] = useState(localStorage.getItem("username"));
+    const [searchTerm, setSearchTerm] = useState('');
     const isRoot = username === "Root";
 
     useEffect(() => {
@@ -45,14 +47,19 @@ const ModificarAnime = () => {
         setModalShow(true);
     };
 
+    const filteredMangas = mangas.filter(manga =>
+        manga.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
     if (!isRoot) {
         return <div>No tienes autorización para ver esta opción</div>;
     }
 
     return (
-        <div>
+        <div style={{marginTop:'1em'}}>
+            <SearchBar setSearchTerm={setSearchTerm} />
             <Row>
-                {mangas.map(manga => (
+                {filteredMangas.map(manga => (
                     <Col sm={6} md={4} lg={3} key={manga.imdbId}>
                         <Card style={{ height: '100%' }}>
                             <Card.Img variant="top" src={manga.poster} style={{ height: '200px', objectFit: 'cover' }} />

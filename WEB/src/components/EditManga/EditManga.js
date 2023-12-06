@@ -4,11 +4,14 @@ import { useParams } from 'react-router-dom';
 import { Button, Form, Col,Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
+
 const EditManga = () => {
     const { imdbId } = useParams();
     const [anime, setAnime] = useState(null);
     const [newGenre, setNewGenre] = useState('');
     const [newBackdrop, setNewBackdrop] = useState('');
+    const [username, setUsername] = useState(localStorage.getItem("username"));
+    const isRoot = username === "Root";
 
     useEffect(() => {
         api.get(`api/v1/mangas/${imdbId}`)
@@ -64,6 +67,11 @@ const EditManga = () => {
 
     if (!anime) {
         return <div>Loading...</div>;
+    }
+
+    if (!isRoot) {
+        toast.error('No tienes autorización para ver esta opción');
+        return <div>No tienes autorización para ver esta opción</div>;
     }
 
     return (
